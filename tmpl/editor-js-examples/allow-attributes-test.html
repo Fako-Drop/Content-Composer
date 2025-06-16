@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Editor.js + Custom Paragraph</title>
+	<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+</head>
+
+<body>
+	<div id="editorjs"></div>
+
+	<script>
+		class CustomParagraph {
+			static get toolbox() {
+				return {
+					title: 'Paragraph',
+					icon: '<svg width="14" height="14"><path d="M2 2h10v2H2V2zm0 4h7v2H2V6zm0 4h10v2H2v-2z"/></svg>',
+				};
+			}
+
+			static get sanitize() {
+				return {
+					text: true,
+					className: true,
+				};
+			}
+
+			static get conversionConfig() {
+				return {
+					export: 'text',
+					import: 'text',
+				};
+			}
+
+			constructor({data}) {
+				this.data = {
+					text: data.text || '',
+					className: data.className || ''
+				};
+				this.p = document.createElement('p');
+				this.p.innerHTML = this.data.text;
+				if (this.data.className) {
+					this.p.className = this.data.className;
+				}
+			}
+
+			render() {
+				return this.p;
+			}
+
+			static get pasteConfig() {
+				return {
+					tags: ['P']
+				};
+			}
+
+			save(blockContent) {
+				return {
+					text: blockContent.innerHTML,
+					className: blockContent.className
+				};
+			}
+
+			validate(savedData) {
+				return typeof savedData.text === 'string' && savedData.text.trim() !== '';
+			}
+		}
+
+		const editor = new EditorJS({
+			holder: 'editorjs',
+			tools: {
+				paragraph: {
+					class: CustomParagraph,
+					config: {
+						allowedClasses: ['red', 'blue'],
+						defaultClass: 'red'
+					}
+				}
+			},
+			onReady: () => {
+				const html = "<p class='red'>Hello, styled text</p>";
+				editor.blocks.renderFromHTML(html).catch(err => console.error("renderFromHTML error:", err));
+			}
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Editor.js Test</title>
+</head>
+
+<body>
+	<h1>Edit Home Page</h1>
+	<div id="editorjs"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8/dist/editorjs.umd.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/codex.editor.header@2.1.0/dist/bundle.js"></script>
+	<script>
+		var editor = new EditorJS({
+			/**
+			 * Create a holder for the Editor and pass its ID
+			 */
+			holder: 'editorjs',
+
+			/**
+			 * Available Tools list.
+			 * Pass Tool's class or Settings object for each Tool you want to use
+			 */
+			tools: {
+				header: {
+					class: Header,
+					inlineToolbar: true
+				},
+				// ...
+			},
+
+			/**
+			 * Previously saved data that should be rendered
+			 */
+			data: {},
+
+			/**
+				* onReady callback
+				*/
+			onReady: () => {console.log('Editor.js is ready to work!')},
+
+			/**
+				* onChange callback
+				* Accepts CustomEvent describing what happened
+				*/
+			onChange: (editorAPI, event) => {console.log('Now I know that Editor\'s content changed!')}
+		});
+
+		editor.isReady
+			.then(() => {
+				/** Do anything you need after editor initialization */
+			})
+			.catch((reason) => {
+				console.log(`Editor.js initialization failed because of ${reason}`)
+			});
+
+		editor.save()
+			.then((savedData) => {
+				console.log(savedData);
+			})
+			.catch((error) => {
+				console.error('Saving error', error);
+			});
+	</script>
+</body>
+
+</html>
