@@ -76,6 +76,6 @@ If you:
 
 **We’d love to collaborate.**
 
-> [Reach out or follow progress here](https://github.com/Fako-Drop/Content-Composer) (placeholder)
+> [Reach out or follow progress here](https://github.com/Fako-Drop/Content-Composer)
 
 ---
